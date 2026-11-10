@@ -1,3 +1,12 @@
+from flask import Flask, render_template, request, redirect, url_for, flash
+import sqlite3
+from pathlib import Path
+from datetime import datetime
+import os
+
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / "tarefas.db"
+
 app = Flask(__name__)
 app.secret_key = "chave-local-do-projeto-integrador"
 
@@ -23,16 +32,6 @@ def inicializar_banco():
         """)
 
 
-@app.route("/editar/<int:tarefa_id>", methods=["GET", "POST"])
-def editar(tarefa_id):
-    ...
-
-
-@app.route("/excluir/<int:tarefa_id>", methods=["POST"])
-def excluir(tarefa_id):
-    ...
-
-
-if __name__ == "__main__":
-    inicializar_banco()
-    app.run(debug=False, host="127.0.0.1", port=5000)
+@app.route("/")
+def inicio():
+  
