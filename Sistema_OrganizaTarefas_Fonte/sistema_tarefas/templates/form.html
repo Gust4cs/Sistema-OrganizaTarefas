@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ acao }} | OrganizaTarefas{% endblock %}
+{% block content %}
+<section class="form-wrap">
+  <a class="voltar" href="{{ url_for('inicio') }}">← Voltar ao painel</a>
+  <h1>{{ acao }}</h1>
+  <p class="sub">Preencha os dados para organizar sua atividade.</p>
+  <form method="post" class="formulario">
+    <label for="titulo">Título *</label>
+    <input id="titulo" name="titulo" maxlength="120" required value="{{ tarefa.titulo or '' }}" placeholder="Ex.: Entregar atividade de programação">
+    <label for="descricao">Descrição</label>
+    <textarea id="descricao" name="descricao" rows="4" placeholder="Detalhes da tarefa (opcional)">{{ tarefa.descricao or '' }}</textarea>
+    <div class="duas-colunas">
+      <div><label for="prazo">Prazo</label><input id="prazo" type="date" name="prazo" value="{{ tarefa.prazo or '' }}"></div>
+      <div><label for="prioridade">Prioridade</label><select id="prioridade" name="prioridade">
+        {% for p in ['Baixa','Média','Alta'] %}<option {% if (tarefa.prioridade or 'Média') == p %}selected{% endif %}>{{ p }}</option>{% endfor %}
+      </select></div>
+    </div>
+    <label for="status">Status</label>
+    <select id="status" name="status">
+      {% for s in ['Pendente','Em andamento','Concluída'] %}<option {% if (tarefa.status or 'Pendente') == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+    </select>
+    <div class="botoes"><button class="botao primario" type="submit">Salvar tarefa</button><a class="botao secundario" href="{{ url_for('inicio') }}">Cancelar</a></div>
+  </form>
+</section>
+{% endblock %}

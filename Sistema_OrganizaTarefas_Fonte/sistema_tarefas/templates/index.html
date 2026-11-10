@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Painel | OrganizaTarefas{% endblock %}
+{% block content %}
+<section class="cabecalho">
+  <div><p class="sobretitulo">PAINEL DE CONTROLE</p><h1>Suas tarefas, em um só lugar.</h1>
+  <p class="sub">Cadastre, organize e acompanhe suas atividades.</p></div>
+</section>
+<section class="metricas">
+  <div class="metrica"><span>Total</span><strong>{{ totais.total or 0 }}</strong></div>
+  <div class="metrica"><span>Pendentes</span><strong>{{ totais.pendentes or 0 }}</strong></div>
+  <div class="metrica"><span>Em andamento</span><strong>{{ totais.andamento or 0 }}</strong></div>
+  <div class="metrica"><span>Concluídas</span><strong>{{ totais.concluidas or 0 }}</strong></div>
+</section>
+<form class="filtros" method="get" action="{{ url_for('inicio') }}">
+  <input type="search" name="q" placeholder="Buscar por título ou descrição" value="{{ busca }}">
+  <select name="status">
+    <option value="">Todos os status</option>
+    {% for s in ['Pendente','Em andamento','Concluída'] %}
+      <option value="{{ s }}" {% if filtro == s %}selected{% endif %}>{{ s }}</option>
+    {% endfor %}
+  </select>
+  <button class="botao secundario" type="submit">Filtrar</button>
+  <a class="limpar" href="{{ url_for('inicio') }}">Limpar</a>
+</form>
+<section class="lista">
+  {% if tarefas %}
+    {% for tarefa in tarefas %}
+    <article class="tarefa">
+      <div class="tarefa-principal">
+        <div class="linha-titulo"><h2>{{ tarefa.titulo }}</h2><span class="status {{ tarefa.status|lower|replace(' ','-') }}">{{ tarefa.status }}</span></div>
+        {% if tarefa.descricao %}<p>{{ tarefa.descricao }}</p>{% endif %}
+        <div class="detalhes">
+          <span>Prioridade: <b>{{ tarefa.prioridade }}</b></span>
+          <span>Prazo: <b>{{ tarefa.prazo or 'Não definido' }}</b></span>
+        </div>
+      </div>
+      <div class="acoes">
+        <a class="botao pequeno secundario" href="{{ url_for('editar', tarefa_id=tarefa.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('excluir', tarefa_id=tarefa.id) }}" onsubmit="return confirm('Deseja realmente excluir esta tarefa?')">
+          <button class="botao pequeno perigo" type="submit">Excluir</button>
+        </form>
+      </div>
+    </article>
+    {% endfor %}
+  {% else %}
+    <div class="vazio"><h2>Nenhuma tarefa encontrada</h2><p>Cadastre uma tarefa ou ajuste os filtros da busca.</p>
+    <a class="botao primario" href="{{ url_for('nova') }}">Cadastrar primeira tarefa</a></div>
+  {% endif %}
+</section>
+{% endblock %}

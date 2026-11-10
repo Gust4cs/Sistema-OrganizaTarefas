@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}OrganizaTarefas{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topo">
+  <div class="container topo-inner">
+    <a class="marca" href="{{ url_for('inicio') }}">Organiza<span>Tarefas</span></a>
+    <a class="botao primario" href="{{ url_for('nova') }}">+ Nova tarefa</a>
+  </div>
+</header>
+<main class="container">
+  {% with mensagens = get_flashed_messages(with_categories=true) %}
+    {% for categoria, mensagem in mensagens %}
+      <div class="alerta {{ categoria }}">{{ mensagem }}</div>
+    {% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer>Projeto Integrador • Sistema demonstrativo de gerenciamento de tarefas</footer>
+</body>
+</html>
