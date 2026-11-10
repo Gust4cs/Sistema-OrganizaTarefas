@@ -26,6 +26,8 @@ def inicializar_banco():
                 criado_em TEXT NOT NULL
             )
         """)
+        #cria o banco e a tabela ao iniciar a aplicação
+inicializar_banco =()
 
 @app.route("/")
 def inicio():
